@@ -130,7 +130,7 @@
                             <i class="fas fa-envelope"></i>
                             <div>
                                 <h4>Sales Email</h4>
-                                <p>nebassel@gmail.com</p>
+                                <p><a href="mailto:nebassel@gmail.com">nebassel@gmail.com</a></p>
                             </div>
                         </div>
                         <div class="contact-item">
@@ -236,7 +236,7 @@
                 </div>
                 <div class="footer-contact">
                     <h3>Partnership Team</h3>
-                    <p>Email: nebassel@gmail.com</p>
+                    <p>Email: <a href="mailto:nebassel@gmail.com">nebassel@gmail.com</a></p>
                     <p>Phone: 1-800-HEALTH-AD</p>
                 </div>
             </div>
@@ -246,21 +246,10 @@
         </div>
     </footer>
 
+    <script src="../../js/form-manager.js"></script>
     <script>
-        // Form validation and submission
-        document.getElementById('partnershipForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const submitButton = this.querySelector('button[type="submit"]');
-            submitButton.classList.add('loading');
-            
-            // Simulate form submission
-            setTimeout(() => {
-                alert('Thank you for your partnership inquiry! Our team will contact you within 24 hours.');
-                this.reset();
-                submitButton.classList.remove('loading');
-            }, 1500);
-        });
+        // The form will now be handled by the FormManager class
+        // which automatically sends emails to nebassel@gmail.com
     </script>
 </body>
 </html>

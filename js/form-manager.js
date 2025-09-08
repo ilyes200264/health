@@ -213,23 +213,92 @@ class FormManager {
         submitButton.disabled = true;
 
         try {
-            // Simulate form submission
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            // Collect form data
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Send email using mailto (opens email client)
+            const subject = this.getEmailSubject(form, data);
+            const body = this.formatEmailBody(form, data);
+            const mailtoLink = `mailto:nebassel@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+            
+            // Simulate brief delay for UX
+            await new Promise(resolve => setTimeout(resolve, 800));
 
             // Show success message
-            window.notificationManager.success('Formulaire envoyé avec succès !');
-            form.reset();
+            if (window.notificationManager) {
+                window.notificationManager.success('Votre client email s\'est ouvert avec le message pré-rempli !');
+            } else {
+                alert('Votre client email s\'est ouvert avec le message pré-rempli !');
+            }
+            
+            // Don't reset form immediately in case user wants to make changes
+            // form.reset();
 
             // Trigger success callback if defined
             if (typeof form.onSubmitSuccess === 'function') {
                 form.onSubmitSuccess();
             }
         } catch (error) {
-            window.notificationManager.error('Une erreur est survenue. Veuillez réessayer.');
+            if (window.notificationManager) {
+                window.notificationManager.error('Une erreur est survenue. Veuillez réessayer.');
+            } else {
+                alert('Une erreur est survenue. Veuillez réessayer.');
+            }
         } finally {
             submitButton.classList.remove('loading');
             submitButton.disabled = false;
         }
+    }
+
+    getEmailSubject(form, data) {
+        // Determine subject based on form type and data
+        if (form.id === 'partnershipForm' || form.classList.contains('partnership-form')) {
+            const partnershipType = data.partnershipType || 'Général';
+            return `Demande de Partenariat - ${partnershipType}`;
+        } else if (form.id === 'contactForm') {
+            const subject = data.subject || 'Question générale';
+            return `Contact HealthCompare - ${subject}`;
+        } else if (form.id === 'subscribe-form') {
+            return 'Demande d\'inscription à la newsletter HealthCompare';
+        } else {
+            return 'Message depuis HealthCompare';
+        }
+    }
+
+    formatEmailBody(form, data) {
+        let body = 'Bonjour,\\n\\nVoici les détails du formulaire soumis :\\n\\n';
+        
+        // Format the data nicely
+        for (const [key, value] of Object.entries(data)) {
+            if (value && value.trim()) {
+                const label = this.getFieldLabel(key);
+                body += `${label}: ${value}\\n`;
+            }
+        }
+        
+        body += '\\n\\nCordialement,\\nUn utilisateur de HealthCompare';
+        return body;
+    }
+
+    getFieldLabel(fieldName) {
+        const labels = {
+            'name': 'Nom',
+            'firstName': 'Prénom',
+            'lastName': 'Nom de famille',
+            'email': 'Email',
+            'phone': 'Téléphone',
+            'company': 'Entreprise',
+            'subject': 'Sujet',
+            'message': 'Message',
+            'partnershipType': 'Type de partenariat',
+            'budget': 'Budget estimé',
+            'newsletter': 'Newsletter'
+        };
+        return labels[fieldName] || fieldName;
     }
 }
 

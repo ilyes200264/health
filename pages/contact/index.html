@@ -225,7 +225,7 @@
                     <h2>Contact Information</h2>
                     <div class="info-item">
                         <h3>Email</h3>
-                        <p>nebassel@gmail.com</p>
+                        <p><a href="mailto:nebassel@gmail.com">nebassel@gmail.com</a></p>
                     </div>
                     <div class="info-item">
                         <h3>Social Media</h3>
@@ -312,7 +312,7 @@
                 </div>
                 <div class="footer-contact">
                     <h3>Contact</h3>
-                    <p>Email: nebassel@gmail.com</p>
+                    <p>Email: <a href="mailto:nebassel@gmail.com">nebassel@gmail.com</a></p>
                     <div class="social-links">
                         <a href="#" class="social-icon">Facebook</a>
                         <a href="#" class="social-icon">Twitter</a>
@@ -331,16 +331,10 @@
     <script src="../../js/affiliate-tracking.js"></script>
     <script src="../../js/analytics.js"></script>
     <script src="../../js/mobile-menu.js"></script>
+    <script src="../../js/form-manager.js"></script>
     <script>
-        // Contact form handling
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // In a real implementation, this would send the form data to a server
-            // For now, we'll just show a success message
-            alert('Thank you for your message! We will get back to you as soon as possible.');
-            this.reset();
-        });
+        // The form will now be handled by the FormManager class
+        // which automatically sends emails to nebassel@gmail.com
     </script>
 </body>
 </html>
